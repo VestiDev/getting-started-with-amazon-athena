@@ -13,3 +13,40 @@ This is a public repository so there is no need to create an account to download
 To download via git from your preferred terminal application, type:
 
 ```git clone https://resources.oreilly.com/binderhub/getting-started-with-amazon-athena```
+
+
+# Schema of the sample data
+
+```sh
+Transaction_date string, Product string, Price int, Payment_Type string, Name string, City string, State string, Country string, Account_Created string, Last_Login string, Latitude float, Longitude float, US_Zip bigint
+```
+
+# Create ```External Table``` Cable Command for Athena
+
+```sql
+CREATE EXTERNAL TABLE `sales`(
+  `transaction_date` string, 
+  `product` string, 
+  `price` int, 
+  `payment_type` string, 
+  `name` string, 
+  `city` string, 
+  `state` string, 
+  `country` string, 
+  `account_created` string, 
+  `last_login` string, 
+  `latitude` float, 
+  `longitude` float, 
+  `us_zip` bigint)
+ROW FORMAT DELIMITED 
+  FIELDS TERMINATED BY ',' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  's3://test-bucket-nv/getting_started_with_athena'
+TBLPROPERTIES (
+  'has_encrypted_data'='false', 
+  'transient_lastDdlTime'='1609994120')
+```
